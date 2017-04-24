@@ -1,0 +1,11 @@
+div.paragraphs-dropbutton-wrapper input.field-add-more-submit.public {
+  background-image: linear-gradient(to bottom, red, #e7e7df);
+  border-radius: 0.5em;
+  min-height: 3em;
+}
+
+div.paragraphs-dropbutton-wrapper input.field-add-more-submit.private {
+  background-image: linear-gradient(to bottom, green, #e7e7df);
+  border-radius: 0.5em;
+  min-height: 3em;
+}
