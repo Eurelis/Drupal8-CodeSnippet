@@ -31,6 +31,9 @@ class AlternativeInlineParagraphsWidget extends InlineParagraphsWidget {
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $form = parent::settingsForm($form, $form_state);
 
+    // Unset original add modes; they are not compatible with our custom mode.
+    unset($form['add_mode']['#options']);
+
     $form['add_mode']['#options']['custom'] = $this->t('Custom');
 
     return $form;
@@ -66,20 +69,8 @@ class AlternativeInlineParagraphsWidget extends InlineParagraphsWidget {
     }
 
     switch ($this->getSetting('add_mode')) {
-      case 'select':
-      default:
-        $add_mode = $this->t('Select list');
-        break;
-
-      case 'button':
-        $add_mode = $this->t('Buttons');
-        break;
-
-      case 'dropdown':
-        $add_mode = $this->t('Dropdown button');
-        break;
-
       case 'custom':
+      default:
         $add_mode = $this->t('Custom');
         break;
     }
@@ -126,14 +117,7 @@ class AlternativeInlineParagraphsWidget extends InlineParagraphsWidget {
       return $add_more_elements;
     }
 
-    if ($this->getSetting('add_mode') == 'button' || $this->getSetting('add_mode') == 'dropdown') {
-      return $this->buildButtonsAddMode();
-    }
-    elseif ($this->getSetting('add_mode') == 'custom') {
-      return $this->buildCustomAddMode();
-    }
-
-    return $this->buildSelectAddMode();
+    return $this->buildCustomAddMode();
   }
 
   /**
@@ -278,7 +262,7 @@ class AlternativeInlineParagraphsWidget extends InlineParagraphsWidget {
     // Go four levels up in the form, to the widgets container.
     $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -5));
 
-    $delta = array_slice($button['#array_parents'], -4, -3);
+    $delta = array_slice($button['#array_parents'], -5, -4);
     $delta = $delta[0];
 
     $field_name = $element['#field_name'];
